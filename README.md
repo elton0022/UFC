@@ -1,2 +1,2 @@
 # UFC
-Repository for codes of several projects developed at the Federal University of Ceará
+Repository for codes of several projects developed at the Universidade Federal do Ceará
