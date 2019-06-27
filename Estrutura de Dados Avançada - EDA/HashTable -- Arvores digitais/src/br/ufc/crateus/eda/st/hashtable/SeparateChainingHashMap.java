@@ -13,6 +13,7 @@ public class SeparateChainingHashMap<K, V> implements Map<K, V> {
 	
 	private Node[] table;
 	private int size;
+	private int pos = 0;
 	
 	private static class Node {
 		
@@ -33,8 +34,7 @@ public class SeparateChainingHashMap<K, V> implements Map<K, V> {
 		int exp;
 		String coef;
 		
-		Term(int exp, String coef) {
-			
+		Term(int exp, String coef) {		
 			this.exp = exp;
 			this.coef = coef;
 		}
@@ -46,7 +46,6 @@ public class SeparateChainingHashMap<K, V> implements Map<K, V> {
 	}
 	
 	public SeparateChainingHashMap(int m) {
-		
 		this.table = new Node[m];
 		size = 0;
 	}
@@ -67,15 +66,21 @@ public class SeparateChainingHashMap<K, V> implements Map<K, V> {
 	}
 	
 	private int hash(K key) {
-		return (key.hashCode() & 0x7fffffff) % table.length; // Remove bit signal
+		return ((key.hashCode() & 0x7fffffff) % table.length); // Remove bit signal
 	}
+	
+	private int hashPerfect(K key) {
+		return (11 * (char)key.hashCode() % table.length); 
+	}
+	
+	
 	
 	@Override
 	public void put(K key, V value) {
 		
 		if ((this.size / table.length) >= 8) resize(2 * this.size);
 		
-		int i = hash(key);
+		int i = hashPerfect(key);
 		for (Node n = table[i]; n != null; n = n.next) { 
 			if (key.equals(n.key)) {
 				n.value = value;
@@ -94,7 +99,7 @@ public class SeparateChainingHashMap<K, V> implements Map<K, V> {
 		
 		return (n!=null) ? (V) n.value : null;
 	}
-	
+	//@Questão 7
 	@Override
 	public void remove(K key) {
 		
@@ -278,6 +283,54 @@ public class SeparateChainingHashMap<K, V> implements Map<K, V> {
 		return list;
 	}
 	
-
+	//Questão 3-c
+    public int verify(String A, String P) {
+		
+		return verify(A,P,0,P.length()-1);
+	}
+	
+	
+	private int verify(String A, String P, int init, int fim) {	
+		char[] a = A.toCharArray();
+		String work = "";
+		if(fim >= A.length()) return -1;
+		
+		for(int i = init; i <=fim;i++)work += a[i];
+		
+		if(hash((K)work) == hash((K)P)) {
+			if(work.equals(P)) return init;
+			else return -1;
+		}
+		else return verify(A,P,init+1,fim+1);
+	}
+	
+	
+    //@Questão 5
+    /*    a) Não necessariamente, porque além da função hash o mesmo teria que ter acesso a senha e login em si,para
+           que depois utilizase a hash(senha) para efetuar a entrada na conta.
+        b) Sim, porque é levado em conta o login e a autenticação pela hash da senha, ou seja, como no enuciado
+            (login,hash(senha)) 
+	*/
+     //@Questao 12
+	
+	public K floor(K key) {
+		int i = hash(key);
+		K floor = key;
+		for(Node n=table[i]; n!=null; n=n.next) {
+			if((int)n.key <= (int)floor) floor = (K)n.key;
+		}	
+		return floor;
+	}
+	
+	 public K ceiling(K key) {
+		 int i = hash(key);
+		 K ceil = key;
+		 for(Node n=table[i]; n!=null; n=n.next) {
+			if((int)n.key >= (int)ceil) ceil = (K)n.key;
+		}	
+		return ceil;
+	 }
+	 
+	 
 	
 }
