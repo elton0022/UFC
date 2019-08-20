@@ -105,7 +105,6 @@ else:
 
 # Exercício 4
 
-#--------------------Não acabou---------
 def main():
     n = int(input("Digite o n: "))
     count = 0
@@ -115,10 +114,13 @@ def main():
         lista.append(int(input("Digite um numero ")))
         n-=1
     for i in lista:
-        for x in lista:
-            if(indice(i,lista) != None):
+        for j in lista:
+            if i == j:
                 count+=1
-        print(i , " apareceu ",count," vezes")
+        print(i , " apareceu ", count)
+        while count > 1:
+            lista.remove(i)
+            count-=1
         count = 0
     print(lista)
 
@@ -132,6 +134,41 @@ def indice(item, lista):
 #-----------------------------------------------
 if __name__ == '__main__':
     main()
+
+# Exercício 5
+
+def soma_elementos(ini, fim, lista):
+    soma = 0
+    for i in lista:
+        soma+=i
+    return soma
+
+# testes
+lista  = [1, 2, 3, 4, 5]
+
+# teste 1
+if soma_elementos(0,len(lista),lista) == 15:
+    print("Passou no primeiro teste! :-)")
+else:
+    print("Nao passou no primeiro teste! :-(")
+
+# teste 2
+if soma_elementos(1,4,lista) == 9:
+    print("Passou no segundo teste! :-)")
+else:
+    print("Nao passou no segundo teste! :-(")
+
+# teste 3
+if soma_elementos(2,2,lista) == 0:
+    print("Passou no terceiro teste! :-)")
+else:
+    print("Nao passou no terceiro teste! :-(")
+
+# outros testes
+
+
+# Exercício 6
+
 
 
 
